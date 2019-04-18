@@ -9,13 +9,17 @@ const app = express();
 const PORT = 5000;
 
 const authRoute = require('./routes/auth.route');
+const networkRoute = require('./routes/network.route');
 
-mongoose.connect('mongodb://localhost:27017/bdtnetwork', { useNewUrlParser: true });
+console.log(process.env.MONGO_CONNECTION);
+
+mongoose.connect(process.env.MONGO_CONNECTION, { useNewUrlParser: true });
 
 app.use(logger('tiny'));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use('/auth', authRoute);
+app.use('/network', networkRoute);
 
 app.get('/', (req, res) => {
     token = req.headers['authorization'];

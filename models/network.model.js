@@ -2,9 +2,15 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const networkSchema = new Schema({
-    name: String,
+    name: {
+        type: String,
+        required: true
+    },
     type: { type: String, default: 'banner' },
-    postback: String,
+    postback: {
+        type: String,
+        required: true
+    },
     iframe: String,
     response: { type: Number, default: 1 },
     pars: { type: Array, default: [] }
