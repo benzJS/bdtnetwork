@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
+const conversionSchema = new Schema({
     partner: { type: Schema.Types.ObjectId, ref: 'Partner' },
     date: { type: Date, default: new Date },
     ip: String,
@@ -10,6 +10,6 @@ const userSchema = new Schema({
     country: String
 });
 
-const User = mongoose.model('User', userSchema);
+const Conversion = mongoose.model('Conversion', conversionSchema);
 
-module.exports = User;
+module.exports = Conversion;
