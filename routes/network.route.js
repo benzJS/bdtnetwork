@@ -5,4 +5,8 @@ const controller = require('../controllers/network.controller');
 
 router.post('/', controller.post);
 
+router.get('/', controller.get);
+
+router.delete('/:id', controller.delete);
+
 module.exports = router;
