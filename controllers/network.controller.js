@@ -32,6 +32,23 @@ module.exports.post = async (req, res, next) => {
     }
 }
 
+module.exports.put = async (req, res, next) => {
+    try {
+        const updatedNetwork = await Network.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+        res.status(200).json({
+            success: true,
+            message: 'Update network succesfully!',
+            data: updatedNetwork
+        });
+        return;
+    } catch(err) {
+        res.status(400).json({
+            success: false,
+            message: 'Update failed'
+        })
+    }
+}
+
 module.exports.delete = async (req, res, next) => {
     try {
         const deletedNetwork = await Network.findByIdAndDelete(req.params.id);
