@@ -6,20 +6,26 @@ const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const app = express();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+const cors = require('cors');
 const PORT = 5000;
 
 const authRoute = require('./routes/auth.route');
 const networkRoute = require('./routes/network.route');
+const campaignRoute = require('./routes/campaign.route');
 
 console.log(process.env.MONGO_CONNECTION);
 
 mongoose.connect(process.env.MONGO_CONNECTION, { useNewUrlParser: true });
 
+app.use(cors());
 app.use(logger('tiny'));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use('/auth', authRoute);
 app.use('/network', networkRoute);
+app.use('/campaigns', campaignRoute);
 
 app.get('/', (req, res) => {
     token = req.headers['authorization'];
@@ -38,4 +44,10 @@ app.get('/api/helloworld', (req, res) => {
     res.json({greeting: 'Hello World!!!'})
 })
 
-app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+io.on('connection', socket => {
+    console.log(`${socket.id} just connected`);
+})
+
+http.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+
+module.exports.io = io;
